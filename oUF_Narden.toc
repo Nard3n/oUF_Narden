@@ -1,0 +1,8 @@
+## Interface: 70100
+## Title: oUF_Narden
+## Author: Nard3n
+## Notes: Simple oUF layout for healing Priests
+
+config.lua
+function.lua
+unitframes.lua
