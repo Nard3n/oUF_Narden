@@ -1,0 +1,6 @@
+## Interface: 70000
+## Title: oUF_Narden
+## Author: Haste
+## Version: 1.6.9
+
+core.lua
