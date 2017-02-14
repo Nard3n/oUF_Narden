@@ -708,7 +708,7 @@ oUF:Factory(function(self)
 	
 	for index = 1, MAX_BOSS_FRAMES do
 		local boss = self:Spawn('boss' .. index)
-		--local arena = self:Spawn('arena' .. index)
+		
 		
 		if(index == 1) then
 			boss:SetPoint('LEFT', UIParent, 'LEFT', 100, 150)
@@ -716,6 +716,15 @@ oUF:Factory(function(self)
 		else
 			boss:SetPoint('TOP', _G['oUF_NardenBoss' .. index - 1], 'BOTTOM', 0, -15)
 			--arena:SetPoint('BOTTOM', _G['oUF_NardenArena' .. index -1), 'TOP', 0, 15)
+		end
+	end
+	
+	for index = 1, MAX_ARENA_FRAMES do
+		local arena = self:Spawn('arena' .. index)
+		if(index == 1) then
+			arena:SetPoint('BOTTOMRIGHT', oUF_NardenPlayer, 'TOPLEFT', -150, 150)
+		else
+			arena:SetPoint('BOTTOM', _G['oUF_NardenArena' .. index -1), 'TOP', 0, 15)
 		end
 	end
 end)
