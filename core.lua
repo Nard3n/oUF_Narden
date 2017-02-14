@@ -421,6 +421,20 @@ local function Debuffhighlight(self)
 	self.DebuffHighlight = dbh
 end
 
+local function UpdateThreat(self, _, unit)
+	if (self.unit ~= unit) then
+		return
+	end
+	
+	local threatStatus = UnitThreatSituation(unit) or 0
+	
+	if (threatStatus and threatStatus >= 2) then	
+		local r, g, b = GetThreatStatusColor(threatStatus)
+		self.ThreatGlow:SetBackdropBorderColor(r, g, b, 1)
+	else	
+		self.ThreatGlow:SetBackdropBorderColor(0, 0, 0, 0)
+	end
+end
 
 --[[LAYOUT]]
 local function CreateStyle(self, unit)
@@ -486,10 +500,6 @@ local function CreateStyle(self, unit)
 		CreateCastbar(self)
 		Debuffhighlight(self)
 		Healcomm(self)
-			
-		local Threat = CreateFrame('Frame', nil, self)
-		self.Threat = Threat
-		Threat.Override = UpdateThreat
 		
 		local altp = CreateFrame('StatusBar', nil, self)
 		altp:SetStatusBarTexture(HAL_K)
@@ -604,13 +614,14 @@ local function CreateStyle(self, unit)
 		CreateIndicators(self, self)
 		Debuffhighlight(self)
 		
-  local Threat = self:CreateTexture(nil, 'OVERLAY')
-   Threat:SetSize(16, 16)
-   Threat:SetPoint('TOPRIGHT', self)
-   
-   -- Register it with oUF
-   self.Threat = Threat
-   
+		self.ThreatGlow = CreateFrame('Frame', nil, self)
+		self.ThreatGlow:SetPoint('TOPLEFT', self, 'TOPLEFT', -4, 4)
+		self.ThreatGlow:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 4, -4)
+		self.ThreatGlow:SetBackdrop({edgeFile = 'Interface\\AddOns\\oUF_Narden\\media\\textureGlow', edgeSize = 3})
+		self.ThreatGlow:SetBackdropBorderColor(0, 0, 0, 0)
+		self.ThreatGlow:SetFrameLevel(self:GetFrameLevel() - 1)
+		self.ThreatGlow.ignore = true
+		
 		local lfd = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightSmallLeft')
 		lfd:SetFont(font, fontsize, fontoutline)
 		lfd:SetPoint('BOTTOMLEFT', self.Health, 'BOTTOMLEFT', 14, 1)
